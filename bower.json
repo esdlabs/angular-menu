@@ -1,0 +1,20 @@
+{
+  "name": "angular-menu",
+  "version": "0.0.0",
+  "authors": [
+    "Edgar Nadal <edgarnadal@esd.com.do>"
+  ],
+  "main": "src/angular-menu.js",
+  "keywords": [
+    "angular",
+    "menu"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
