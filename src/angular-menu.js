@@ -51,8 +51,9 @@ angular.module('ngMenu', ['ng'])
 
             menu = menu || 'default';
 
-            if (menu !== 'default' && angular.isObject(this.$$menus[menu])) {
-                this.$$menus[menu] = {};
+            // if we're using a menu that is not the default, create the empty array
+            if (menu !== 'default' && !angular.isArray(this.$$menus[menu])) {
+                this.$$menus[menu] = [];
             }
 
             if (angular.isObject(item)) {
