@@ -47,24 +47,64 @@ angular.module('ngMenu', ['ng'])
          * @param  {String} menu
          * @return {self}
          */
-        this.item = function (item, menu) {
+        this.item = function (item, menu, isSubitem) {
 
             menu = menu || 'default';
+
+            isSubitem = isSubitem || false;
+
+            if (typeof menu  == 'boolean') {
+                isSubitem = menu;
+                menu = 'default';
+            }
 
             // if we're using a menu that is not the default, create the empty array
             if (menu !== 'default' && !angular.isArray(this.$$menus[menu])) {
                 this.$$menus[menu] = [];
             }
 
-            if (angular.isObject(item)) {
+            if (!angular.isObject(item)) {
+                return this;
+            }
+
+            if ( !isSubitem || (isSubitem && !this.hasItem(menu, item.label)) ) {
 
                 this.$$menus[menu].push(angular.extend({
                     icon: 'bolt',
                     order: 0
                 }, item));
+
+                return this;
             }
 
+            // No label was sent for the item? (return)
+            if (!item.label) {
+                console.log('angular-menu: subitem sent without item for menu ' +menu+ '. Will be ignored.');
+                return this;
+            }
+
+            // Extend the item with the label of the sent subitem
+            angular.forEach(this.$$menus[menu], function (entry, index) {
+                if (entry.label == item.label) {
+                    angular.forEach(item.subitems, function (subEntry) {
+                        entry.subitems.push( subEntry );
+                    });
+                }
+            });
+
             return this;
+        };
+
+        this.hasItem = function (menu, label) {
+            var found = false;
+
+            angular.forEach(this.$$menus[menu], function (entry, index) {
+                if (entry.label == label) {
+                    found = true;
+                }
+            });
+
+            return found;
         };
 
         /**
